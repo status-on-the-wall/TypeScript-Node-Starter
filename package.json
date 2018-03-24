@@ -1,10 +1,10 @@
 {
-  "name": "express-typescript-starter",
+  "name": "the-wall",
   "version": "0.1.0",
-  "description": "A starting point for Node.js express apps with TypeScript",
+  "description": "The Wall",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
+    "url": "https://github.com/status-on-the-wall/the-wall"
   },
   "author": "Bowden Kelly",
   "license": "MIT",
