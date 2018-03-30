@@ -11,8 +11,8 @@
   "scripts": {
     "start": "npm run serve",
     "build": "npm run build-sass && npm run build-ts && npm run tslint && npm run copy-static-assets",
-    "serve": "node dist/server.js",
-    "watch-node": "nodemon dist/server.js",
+    "serve": "node dist/main.js",
+    "watch-node": "nodemon dist/main.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
     "test": "jest --forceExit --coverage --verbose",
     "build-ts": "tsc",
@@ -22,14 +22,15 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "copy-static-assets": "ts-node copyStaticAssets.ts",
     "debug": "npm run build && npm run watch-debug",
-    "serve-debug": "nodemon --inspect dist/server.js",
+    "serve-debug": "nodemon --inspect dist/main.js",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "dependencies": {
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "mqtt": "^2.17.0",
-    "pug": "^2.0.0-rc.4"
+    "pug": "^2.0.0-rc.4",
+    "winston": "^2.4.1"
   },
   "devDependencies": {
     "@types/dotenv": "^4.0.2",
@@ -39,6 +40,7 @@
     "@types/node": "^9.4.6",
     "@types/shelljs": "^0.7.8",
     "@types/supertest": "^2.0.4",
+    "@types/winston": "^2.3.8",
     "chai": "^4.1.2",
     "concurrently": "^3.5.1",
     "jest": "^22.0.4",
