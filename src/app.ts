@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import path from "path";
 
 // Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: ".env.example" });
+dotenv.config({ path: ".env" });
 
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
