@@ -1,10 +1,16 @@
+import {inject, injectable} from 'inversify';
 import {connect, MqttClient} from 'mqtt';
 import winston from 'winston';
-import {JenkinsProcessor} from '../usecase/jenkins-processor';
+
+import {Processor, Reader} from '../interfaces';
+import {TYPES} from '../types';
 import {BuildResultTo} from '../usecase/build-result-to';
 
-export class JenkinsReader {
-    client: MqttClient;
+@injectable()
+export class JenkinsReader implements Reader {
+    @inject(TYPES.Processor) private processor: Processor;
+
+    private client: MqttClient;
 
     host: string;
     port: string;
@@ -12,7 +18,7 @@ export class JenkinsReader {
     password: string;
     topic: string;
 
-    constructor(host: string, port: string, username: string, password: string, topic: string) {
+    configure(host: string, port: string, username: string, password: string, topic: string): void {
         this.host = host;
         this.port = port;
         this.username = username;
@@ -20,7 +26,7 @@ export class JenkinsReader {
         this.topic = topic;
     }
 
-    start(processor: JenkinsProcessor) {
+    start(): void {
         this.client = connect({
             host: this.host,
             port: this.port,
@@ -35,7 +41,7 @@ export class JenkinsReader {
 
         this.client.on('message', (topic, message) => {
             const messageAsJson: BuildResultTo = JSON.parse(message.toString());
-            processor.process(messageAsJson);
+            this.processor.process(messageAsJson);
         });
 
         this.client.on('error', (error) => {

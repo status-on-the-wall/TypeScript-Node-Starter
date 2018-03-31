@@ -1,8 +1,10 @@
 import app from './app';
-import {JenkinsReader} from './actor/jenkins-reader';
 import dotenv from 'dotenv';
 import path from 'path';
-import {JenkinsProcessor} from './usecase/jenkins-processor';
+
+import {myContainer} from './inversify.config';
+import {TYPES} from './types';
+import {Reader} from './interfaces';
 
 // Load environment variables from .env file, where matt connection is configured
 dotenv.config({path: '.env'});
@@ -20,7 +22,7 @@ const server = app.listen(app.get('port'), () => {
 });
 
 /**
- * Start jenkins reader
+ * Start reader
  */
 const host = process.env.MQTT_HOST;
 const port = process.env.MQTT_PORT;
@@ -28,6 +30,7 @@ const username = process.env.MQTT_USERNAME;
 const password = process.env.MQTT_PASSWORD;
 const topic = process.env.MQTT_TOPIC;
 
-const processor = new JenkinsProcessor();
-const reader = new JenkinsReader(host, port, username, password, topic);
-reader.start(processor);
+const reader = myContainer.get<Reader>(TYPES.Reader);
+
+reader.configure(host, port, username, password, topic);
+reader.start();
