@@ -50,13 +50,15 @@ export class JenkinsProcessor implements Processor {
                     new Error('Unknown build status: ' + buildResult.status);
             }
         } else {
+            const statuses = new Map().set(buildResult.jobName, buildResult.status);
             branchStatus = {
                 branch: buildConfiguration.branch,
-                status: BranchStatusEnum.ALL_SUCCESS,
-                statuses: new Map([[buildResult.jobName, buildResult.status]]),
+                status: this.calculateBranchStatus(statuses),
+                statuses: statuses
             };
         }
 
+        winston.info('branch status: ' + JSON.stringify(branchStatus));
         this.status.set(branchStatus);
     }
 
@@ -77,6 +79,7 @@ export class JenkinsProcessor implements Processor {
                 default:
                     new Error('Unknown build status: ' + status);
             }
+            winston.info('status: ' + status + ', foundSuccess: ' + foundSuccess + ', foundFailure: ' + foundFailure);
         }
 
         if (foundSuccess && !foundFailure) {
