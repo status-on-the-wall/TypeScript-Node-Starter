@@ -1,10 +1,10 @@
-import app from './app';
 import dotenv from 'dotenv';
 import path from 'path';
 
+import app from './app';
 import {myContainer} from './inversify.config';
-import {TYPES} from './types';
-import {Reader} from './interfaces';
+import {Reader} from './inversify.interfaces';
+import {TYPES} from './inversify.types';
 
 // Load environment variables from .env file, where matt connection is configured
 dotenv.config({path: '.env'});

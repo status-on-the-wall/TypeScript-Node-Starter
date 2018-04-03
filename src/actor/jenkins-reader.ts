@@ -2,9 +2,9 @@ import {inject, injectable} from 'inversify';
 import {connect, MqttClient} from 'mqtt';
 import winston from 'winston';
 
-import {Processor, Reader} from '../interfaces';
-import {TYPES} from '../types';
-import {BuildResultTo} from '../usecase/build-result-to';
+import {Processor, Reader} from '../inversify.interfaces';
+import {TYPES} from '../inversify.types';
+import {BuildResultTo} from '../usecase/to/build-result-to';
 
 @injectable()
 export class JenkinsReader implements Reader {
@@ -40,8 +40,12 @@ export class JenkinsReader implements Reader {
         });
 
         this.client.on('message', (topic, message) => {
-            const messageAsJson: BuildResultTo = JSON.parse(message.toString());
-            this.processor.process(messageAsJson);
+            try {
+                const messageAsJson: BuildResultTo = JSON.parse(message.toString());
+                this.processor.process(messageAsJson);
+            } catch (e) {
+                winston.info('error in message: ' + e);
+            }
         });
 
         this.client.on('error', (error) => {

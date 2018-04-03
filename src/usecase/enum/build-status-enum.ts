@@ -1,4 +1,4 @@
-export enum StatusEnum {
+export enum BuildStatusEnum {
     SUCCESS = 'SUCCESS',
     FAILURE = 'FAILURE',
     UNSTABLE = 'UNSTABLE',
