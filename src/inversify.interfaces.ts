@@ -1,3 +1,5 @@
+import {Request, Response} from 'express';
+
 import {BranchStatusTo} from './usecase/to/branch-status-to';
 import {BuildConfigurationTo} from './usecase/to/build-configuration-to';
 import {BuildResultTo} from './usecase/to/build-result-to';
@@ -19,4 +21,8 @@ export interface Status {
     set(buildStatus: BranchStatusTo): void;
 
     get(branch: string): BranchStatusTo;
+}
+
+export interface StatusPage {
+    handle(req: Request, res: Response): void;
 }

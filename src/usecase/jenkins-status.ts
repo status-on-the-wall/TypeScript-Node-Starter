@@ -1,5 +1,4 @@
 import {injectable} from 'inversify';
-import winston from 'winston';
 
 import {Status} from '../inversify.interfaces';
 import {BranchStatusTo} from './to/branch-status-to';
@@ -16,5 +15,15 @@ export class JenkinsStatus implements Status {
 
     get(branch: string): BranchStatusTo {
         return this.statuses.get(branch);
+    }
+
+    getAll(): BranchStatusTo[] {
+        const result: BranchStatusTo[] = new Array();
+
+        for (let status of this.statuses.values()) {
+            result.push(status);
+        }
+
+        return result;
     }
 }

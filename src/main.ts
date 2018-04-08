@@ -1,17 +1,22 @@
 import dotenv from 'dotenv';
+import {Request, Response} from 'express';
 import path from 'path';
 
 import app from './app';
 import {myContainer} from './inversify.config';
-import {Reader} from './inversify.interfaces';
+import {Reader, StatusPage} from './inversify.interfaces';
 import {TYPES} from './inversify.types';
 
 // Load environment variables from .env file, where matt connection is configured
 dotenv.config({path: '.env'});
 
 /**
- * Start Express server.
+ * Configure and start Express server.
  */
+const statusPage = myContainer.get<StatusPage>(TYPES.StatusPage);
+app.use('/', (req: Request, res: Response) => {
+    statusPage.handle(req, res);
+});
 const server = app.listen(app.get('port'), () => {
     console.log(
         'App is running at http://localhost:%d in %s mode',
